@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    这里是看仅管理员可见的
     <img alt="Vue logo" src="../assets/logo.png" />
     <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
   </div>
