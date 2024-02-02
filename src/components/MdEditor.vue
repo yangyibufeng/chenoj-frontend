@@ -1,5 +1,11 @@
 <template>
-  <Editor :value="value" :plugins="plugins" @change="handleChange" />
+  <Editor
+    :value="value"
+    :plugins="plugins"
+    :mode="mode"
+    @change="handleChange"
+    style="min-width: 100vh"
+  />
 </template>
 
 <script setup lang="ts">
@@ -14,6 +20,7 @@ import { ref, withDefaults, defineProps } from "vue";
  */
 interface Props {
   value: string;
+  mode?: string;
   handleChange: (v: string) => void;
 }
 
@@ -27,6 +34,7 @@ const plugins = [
  */
 const props = withDefaults(defineProps<Props>(), {
   value: () => "",
+  mode: () => "split",
   handleChange: (v: string) => {
     console.log(v);
   },

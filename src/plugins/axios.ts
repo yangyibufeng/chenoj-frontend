@@ -2,6 +2,8 @@
 // 用来演示通过直接定义 axios 请求库的全局参数，比如全局请求响应拦截器
 import axios from "axios";
 
+// axios.defaults.withCredentials = true;
+
 axios.interceptors.request.use(
   function (config) {
     // Do something before request is sent

@@ -45,11 +45,12 @@ const store = useStore();
 
 /**
  * 表单信息
+ * 先填上，要不然通过localhost访问不会自动填充代码
  * 将类型规范为UserLoginRequest，便于数据传递、校验
  */
 const form = reactive({
-  userAccount: "",
-  userPassword: "",
+  userAccount: "xshn",
+  userPassword: "123456789",
 } as UserLoginRequest);
 /**
  * 提交表单

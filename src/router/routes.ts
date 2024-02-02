@@ -6,6 +6,8 @@ import ACCESS_ENUM from "@/access/accessEnum";
 import UserLoginView from "@/views/users/UserLoginView.vue";
 import UserRegisterView from "@/views/users/UserRegisterView.vue";
 import UserLayout from "@/layouts/UserLayout.vue";
+import AddQuestionView from "@/views/question/AddQuestionView.vue";
+import ManageQuestionView from "@/views/question/ManageQuestionView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -34,6 +36,30 @@ export const routes: Array<RouteRecordRaw> = [
     component: HomeView,
   },
   {
+    path: "/add/question",
+    name: "创建题目",
+    component: AddQuestionView,
+    // meta: {
+    //   access: ACCESS_ENUM.ADMIN,
+    // }, // 方便开发，先注释掉
+  },
+  {
+    path: "/update/question",
+    name: "更新题目",
+    component: AddQuestionView,
+    // meta: {
+    //   access: ACCESS_ENUM.ADMIN,
+    // }, // 方便开发，先注释掉
+  },
+  {
+    path: "/manage/question",
+    name: "管理题目",
+    component: ManageQuestionView,
+    // meta: {
+    //   access: ACCESS_ENUM.ADMIN,
+    // }, // 方便开发，先注释掉
+  },
+  {
     path: "/hide",
     name: "隐藏文件",
     component: HomeView,
@@ -41,15 +67,15 @@ export const routes: Array<RouteRecordRaw> = [
       hideInMenu: true,
     },
   },
-  {
-    path: "/admin",
-    name: "管理题目",
-    component: AdminView,
-    meta: {
-      // hideInMenu: true,
-      access: ACCESS_ENUM.ADMIN,
-    }, //vue-router 提供的可以覆盖原信息的功能
-  },
+  // {
+  //   path: "/admin",
+  //   name: "管理题目",
+  //   component: AdminView,
+  //   meta: {
+  //     // hideInMenu: true,
+  //     access: ACCESS_ENUM.ADMIN,
+  //   }, //vue-router 提供的可以覆盖原信息的功能
+  // },
   {
     path: "/noAuth",
     name: "无权页面",
