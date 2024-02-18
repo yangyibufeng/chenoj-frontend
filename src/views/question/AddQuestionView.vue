@@ -95,7 +95,7 @@ import {
   QuestionControllerService,
 } from "../../../generated";
 import message from "@arco-design/web-vue/es/message";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
 // 如果页面地址包含update，就视为是更新页面
@@ -128,9 +128,7 @@ const loadData = async () => {
   if (!id) {
     return;
   }
-
   name = "更新";
-
   const res = await QuestionControllerService.getQuestionByIdUsingGet(
     id as any
   );
@@ -190,6 +188,8 @@ const handleDelete = (index: number) => {
   form.value.judgeCase.splice(index, 1);
 };
 
+const router = useRouter();
+
 const doSubmit = async () => {
   console.log(form.value);
   // 区分这是更新还是创建接口
@@ -199,6 +199,9 @@ const doSubmit = async () => {
     );
     if (res.code === 0) {
       message.success("题目更新成功！");
+      router.push({
+        path: "/manage/question",
+      });
       // loadData();
     } else {
       message.error("题目更新失败" + res.message);

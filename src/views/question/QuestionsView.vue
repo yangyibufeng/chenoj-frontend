@@ -1,6 +1,26 @@
 <template>
-  <div id="manageQuestionView">
-    <div>管理题目</div>
+  <div id="questionsView">
+    <!--  <div>所有题目</div>-->
+    <a-form :model="searchParams" layout="inline">
+      <a-form-item field="title" label="题目">
+        <a-input
+          v-model="searchParams.title"
+          placeholder="请输入题目名称 ... "
+          style="min-width: 280px"
+        />
+      </a-form-item>
+      <a-form-item field="tags" label="标签">
+        <a-input-tag
+          v-model="searchParams.tags"
+          placeholder="请输入标签 ..."
+          style="min-width: 280px"
+        />
+      </a-form-item>
+      <a-form-item>
+        <a-button type="primary" @click="doSubmit">查询</a-button>
+      </a-form-item>
+    </a-form>
+    <a-divider size="0" />
     <a-table
       :columns="columns"
       :data="dataList"
@@ -10,11 +30,22 @@
         current: searchParams.current,
         total,
       }"
-      :hoverable="true"
-      :show-header="true"
-      :stripe="true"
       @page-change="onPageChange"
     >
+      <template #tags="{ record }">
+        <a-space wrap>
+          <a-tag v-for="(tag, index) of record.tags" :key="index" color="green"
+            >{{ tag }}
+          </a-tag>
+        </a-space>
+      </template>
+      <template #acceptedRate="{ record }">
+        {{
+          `${record.submitNum ? record.acceptedNum / record.submitNum : "0"}%(${
+            record.acceptedNum
+          }/${record.submitNum})`
+        }}
+      </template>
       <template #createTime="{ record }">
         {{ moment(record.createTime).format("YYYY-MM-DD") }}
       </template>
@@ -23,8 +54,7 @@
           <a-button type="primary" @click="toQuestionPage(record)"
             >详情
           </a-button>
-          <a-button type="primary" @click="doUpdate(record)">修改</a-button>
-          <a-button status="danger" @click="doDelete(record)">删除</a-button>
+          <!--        <a-button status="danger" @click="doDelete(record)">删除</a-button>-->
         </a-space>
       </template>
     </a-table>
@@ -33,7 +63,11 @@
 
 <script setup lang="ts">
 import { onMounted, ref, watchEffect } from "vue";
-import { Question, QuestionControllerService } from "../../../generated";
+import {
+  Question,
+  QuestionControllerService,
+  QuestionQueryRequest,
+} from "../../../generated";
 import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
 import moment from "moment";
@@ -42,24 +76,37 @@ const show = ref(true);
 
 const dataList = ref([]);
 const total = ref(0);
-const searchParams = ref({
+const searchParams = ref<QuestionQueryRequest>({
+  title: "",
+  tags: [],
   pageSize: 10,
   // pageSize: 2,
   current: 1,
 });
 
 const loadData = async () => {
-  const res = await QuestionControllerService.listQuestionByPageUsingPost(
+  const res = await QuestionControllerService.listQuestionVoByPageUsingPost(
     searchParams.value
   );
   if (res.code === 0) {
     dataList.value = res.data.records;
     total.value = res.data.total;
-    message.success("成功加载题目列表");
-    console.log(dataList.value);
+    // message.success("成功加载题目列表");
   } else {
     message.error("加载失败" + res.message);
   }
+};
+/**
+ * 确认搜索，重新加载数据
+ */
+const doSubmit = () => {
+  searchParams.value = {
+    ...searchParams.value,
+    current: 1,
+    //新建一个查询的时候将分页页码改到第一页
+  };
+  // 上面已经将searchParams的值改变，会被钩子函数监听到从而自动执行重新加载
+  // loadData();
 };
 /**
  * 创建一个钩子函数，这个函数的作用是：当里面方法中有变量发生改变时，重新执行该方法
@@ -78,7 +125,7 @@ onMounted(() => {
 
 const columns = [
   {
-    title: "题目编号",
+    title: "题号",
     dataIndex: "id",
   },
   {
@@ -86,42 +133,19 @@ const columns = [
     dataIndex: "title",
   },
   {
-    title: "内容",
-    dataIndex: "content",
-    ellipsis: true,
-  },
-  {
     title: "标签",
-    dataIndex: "tags",
+    slotName: "tags",
   },
   {
-    title: "提交数",
-    dataIndex: "submitNum",
+    title: "通过率",
+    slotName: "acceptedRate",
   },
   {
-    title: "通过数",
-    dataIndex: "acceptedNum",
-  },
-  {
-    title: "判题配置",
-    dataIndex: "judgeConfig",
-    ellipsis: true,
-  },
-  {
-    title: "样例",
-    dataIndex: "judgeCase",
-    ellipsis: true,
-  },
-  {
-    title: "创建题目时间",
+    title: "题目创建时间",
     slotName: "createTime",
   },
   {
-    title: "创建题目用户id",
-    dataIndex: "userId",
-  },
-  {
-    title: "操作",
+    // title: "操作",
     slotName: "optional",
   },
 ];
@@ -140,31 +164,10 @@ const onPageChange = (page: number) => {
 
 const router = useRouter();
 
-const doUpdate = (question: Question) => {
-  // console.log(question);
-  router.push({
-    path: "/update/question",
-    query: {
-      id: question.id,
-    },
-  });
-};
-
-const doDelete = async (question: Question) => {
-  // console.error(question);
-
-  const res = await QuestionControllerService.deleteQuestionUsingPost({
-    id: question.id,
-  });
-
-  if (res.code === 0) {
-    message.success("删除成功，即将刷新页面");
-    loadData();
-  } else {
-    message.error("删除失败" + res.message);
-  }
-};
-
+/**
+ * 跳转到题目详情页
+ * @param question
+ */
 const toQuestionPage = (question: Question) => {
   router.push({
     path: `/view/question/${question.id}`,
@@ -173,6 +176,8 @@ const toQuestionPage = (question: Question) => {
 </script>
 
 <style scoped>
-#manageQuestionView {
+#questionsView {
+  max-width: 1280px;
+  margin: 0 auto;
 }
 </style>
