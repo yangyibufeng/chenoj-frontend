@@ -129,7 +129,7 @@ const doSubmit = async () => {
     return;
   }
 
-  const res = await QuestionSubmitControllerService.doQuestionSubmitUsingPost({
+  const res = await QuestionControllerService.doQuestionSubmitUsingPost({
     ...form.value,
     questionId: question.value?.id,
   });

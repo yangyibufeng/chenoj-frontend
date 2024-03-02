@@ -1,5 +1,14 @@
 # chenoj-frontend
 
+## 快速根据后端接口生成代码
+```shell
+openapi --input http://地址:端口号/api/v2/api-docs --output ./generated --client axios
+```
+## 通过Prettier格式化生成的ts代码文件
+```shell
+npx prettier --write "项目地址\generated\**\*.ts"
+```
+
 ## Project setup
 ```
 npm install

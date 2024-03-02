@@ -5,8 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "generate-api": "openapi-generator-cli generate -i http://localhost:8121/api/v2/api-docs -g typescript-axios -o ./generated && prettier --write './generated/**/*.ts'"
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "@bytemd/plugin-gfm": "^1.21.0",
@@ -37,7 +36,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^8.0.3",
     "openapi-typescript-codegen": "^0.27.0",
-    "prettier": "^2.8.8",
+    "prettier": "^2.4.1",
     "typescript": "~4.5.5"
   }
 }

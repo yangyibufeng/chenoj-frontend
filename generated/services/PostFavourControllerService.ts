@@ -6,7 +6,6 @@ import type { PostQueryRequest } from "../models/PostQueryRequest";
 import type { CancelablePromise } from "../core/CancelablePromise";
 import { OpenAPI } from "../core/OpenAPI";
 import { request as __request } from "../core/request";
-
 export class PostFavourControllerService {
   /**
    * doPostFavour
@@ -29,7 +28,6 @@ export class PostFavourControllerService {
       },
     });
   }
-
   /**
    * listFavourPostByPage
    * @param postFavourQueryRequest postFavourQueryRequest
@@ -51,7 +49,6 @@ export class PostFavourControllerService {
       },
     });
   }
-
   /**
    * listMyFavourPostByPage
    * @param postQueryRequest postQueryRequest
