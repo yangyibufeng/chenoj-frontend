@@ -89,6 +89,7 @@ import {
 import message from "@arco-design/web-vue/es/message";
 import CodeEditor from "@/components/CodeEditor.vue";
 import MdViewer from "@/components/MdViewer.vue";
+import { useRouter } from "vue-router";
 
 const changeCode = (value: string) => {
   form.value.code = value;
@@ -121,8 +122,12 @@ const form = ref<QuestionSubmitAddRequest>({
   code: "",
 });
 
+const router = useRouter();
+
 /**
  * 提交代码
+ *
+ * 然后跳转到题目提交页
  */
 const doSubmit = async () => {
   if (!question.value?.id) {
@@ -133,9 +138,18 @@ const doSubmit = async () => {
     ...form.value,
     questionId: question.value?.id,
   });
-
   if (res.code === 0) {
-    message.success("提交成功");
+    // First delay: Wait for one second before showing the success message
+    setTimeout(() => {
+      message.success("提交成功");
+
+      // Second delay: After showing the success message, wait another second to redirect
+      setTimeout(() => {
+        router.push({
+          path: `/questions_submit`,
+        });
+      }, 1000);
+    }, 1000);
   } else {
     message.error("提交失败" + res.message);
   }
