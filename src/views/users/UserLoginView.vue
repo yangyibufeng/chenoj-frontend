@@ -61,10 +61,13 @@ const handleSubmit = async () => {
     alert("登陆成功" + JSON.stringify(res.data));
     // 登录成功之后可以保证先让前端页面获取当前用户的信息在进行下面的调转到主页的操作
     await store.dispatch("user/getLoginUser");
+    // 将token保存在localStorage中
+    localStorage.setItem("token", res.data.token);
     router.push({
       path: "/",
       replace: true,
     });
+    message.success("登录成功" + res.message);
   } else {
     message.error("登陆失败， " + res.message);
   }

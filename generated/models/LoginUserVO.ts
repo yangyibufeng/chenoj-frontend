@@ -10,4 +10,5 @@ export type LoginUserVO = {
   userName?: string;
   userProfile?: string;
   userRole?: string;
+  token?:string;
 };

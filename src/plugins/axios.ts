@@ -29,3 +29,18 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+// 使用携带token方式登录
+axios.interceptors.request.use(
+  (config) => {
+    // 假设token存在localStorage中
+    const token = localStorage.getItem("token");
+    console.log("token:", token);
+    if (token) {
+      config.headers.Authorization = token;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
