@@ -1,6 +1,6 @@
 <template>
   <div id="manageQuestionView">
-    <div>管理题目</div>
+    <!--    <div>管理题目</div>-->
     <a-table
       :columns="columns"
       :data="dataList"
@@ -20,9 +20,9 @@
       </template>
       <template #optional="{ record }">
         <a-space>
-          <a-button type="primary" @click="toQuestionPage(record)"
-            >详情
-          </a-button>
+          <!--          <a-button type="primary" @click="toQuestionPage(record)"-->
+          <!--            >详情-->
+          <!--          </a-button>-->
           <a-button type="primary" @click="doUpdate(record)">修改</a-button>
           <a-button status="danger" @click="doDelete(record)">删除</a-button>
         </a-space>
@@ -80,49 +80,62 @@ const columns = [
   {
     title: "题目编号",
     dataIndex: "id",
+    align: "center",
   },
   {
     title: "标题",
     dataIndex: "title",
+    align: "center",
   },
   {
     title: "内容",
     dataIndex: "content",
     ellipsis: true,
+    align: "center",
   },
   {
     title: "标签",
     dataIndex: "tags",
+    align: "center",
   },
   {
     title: "提交数",
     dataIndex: "submitNum",
+    align: "center",
   },
   {
     title: "通过数",
     dataIndex: "acceptedNum",
+    align: "center",
   },
-  {
-    title: "判题配置",
-    dataIndex: "judgeConfig",
-    ellipsis: true,
-  },
-  {
-    title: "样例",
-    dataIndex: "judgeCase",
-    ellipsis: true,
-  },
+  /**
+   {
+   title: "判题配置",
+   dataIndex: "judgeConfig",
+   ellipsis: true,
+   align: "center",
+   },
+   {
+   title: "样例",
+   dataIndex: "judgeCase",
+   ellipsis: true,
+   align: "center",
+   },
+   */
   {
     title: "创建题目时间",
     slotName: "createTime",
+    align: "center",
   },
   {
     title: "创建题目用户id",
     dataIndex: "userId",
+    align: "center",
   },
   {
     title: "操作",
     slotName: "optional",
+    align: "center",
   },
 ];
 /**
