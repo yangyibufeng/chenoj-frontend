@@ -1,20 +1,15 @@
 <template>
   <div id="questionSubmitView">
     <!--  <div>所有题目</div>-->
-    <a-form :model="searchParams" layout="inline">
-      <a-form-item field="title" label="题号">
+    <a-form :model="searchParams" layout="inline" style="margin-left: 300px">
+      <a-form-item field="title" label="题号" tooltip="请输入题目Id">
         <a-input
           v-model="searchParams.questionId"
           placeholder="请输入题目编号 ... "
-          style="min-width: 280px"
         />
       </a-form-item>
-      <a-form-item field="language" label="编程语言">
-        <a-select
-          v-model="searchParams.language"
-          :style="{ width: '320px' }"
-          placeholder="请选择编程语言"
-        >
+      <a-form-item field="language" label="编程语言" style="min-width: 240px">
+        <a-select v-model="searchParams.language" placeholder="请选择编程语言">
           <a-option>java</a-option>
           <a-option>cpp</a-option>
           <a-option>go</a-option>
@@ -22,11 +17,25 @@
         </a-select>
       </a-form-item>
       <a-form-item>
-        <a-button type="primary" @click="doSubmit">查询</a-button>
+        <a-button type="primary" shape="round" status="normal" @click="doSubmit"
+          >查询</a-button
+        >
+      </a-form-item>
+      <a-form-item>
+        <a-button
+          type="primary"
+          shape="round"
+          status="success"
+          @click="loadData"
+          >刷新
+        </a-button>
       </a-form-item>
     </a-form>
     <a-divider size="0" />
     <a-table
+      column-resizable
+      wrapper
+      :ref="tableRef"
       :columns="columns"
       :data="dataList"
       :pagination="{
@@ -34,13 +43,19 @@
         pageSize: searchParams.pageSize,
         current: searchParams.current,
         total,
+        showJumper: true,
+        showPageSize: true,
       }"
       @page-change="onPageChange"
+      @pageSizeChange="onPageSizeChange"
     >
-      <!--      <template #judgeInfo="{ record }">-->
-      <!--        {{ JSON.stringify(record.judgeInfo) }}-->
-      <!--      </template>-->
+      <!--
+      <template #judgeInfo="{ record }">
+        {{ JSON.stringify(record.judgeInfo) }}
+      </template>
+      -->
 
+      <!-- 
       <template #judgeInfoMessage="{ record }">
         {{
           record.judgeInfo.message !== null ? record.judgeInfo.message : "NULL"
@@ -58,6 +73,29 @@
             : "NULL"
         }}
       </template>
+      -->
+
+      <template #judgeInfoMessage="{ record }">
+        <a-space wrap>
+          <a-tag
+            size="medium"
+            v-for="(info, index) of record.judgeInfo"
+            :key="index"
+            :color="colors[index.length % colors.length]"
+          >
+            {{
+              `${
+                index === "message"
+                  ? "结果"
+                  : index === "time"
+                  ? "耗时"
+                  : "消耗内存"
+              }`
+            }}
+            {{ "：" + info }}
+          </a-tag>
+        </a-space>
+      </template>
 
       <template #createTime="{ record }">
         {{ moment(record.createTime).format("YYYY-MM-DD HH:mm:ss") }}
@@ -73,8 +111,18 @@
         >
       </template>
 
+      <!--
       <template #status="{ record }">
         {{ getStatusText(record.status) }}
+      </template>
+      -->
+      <template #status="{ record }">
+        <!--        判题状态（0 - 待判题、1 - 判题中、2 - 成功、3 - 失败）-->
+        <a-tag v-if="record.status === 0" color="cyan">待判题</a-tag>
+        <a-tag v-if="record.status === 1" color="green">判题中</a-tag>
+        <a-tag v-if="record.status === 2" color="blue">成功</a-tag>
+        <a-tag v-if="record.status === 3" color="red">失败</a-tag>
+        <a-tag v-if="record.status > 3" color="black">未知</a-tag>
       </template>
     </a-table>
   </div>
@@ -91,6 +139,7 @@ import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
 import moment from "moment";
 
+const tableRef = ref();
 const dataList = ref([]);
 const total = ref(0);
 const searchParams = ref<QuestionSubmitQueryRequest>({
@@ -101,6 +150,14 @@ const searchParams = ref<QuestionSubmitQueryRequest>({
   current: 1,
 });
 
+/**
+ * 判题信息里面
+ */
+const colors = ["orange", "green", "blue", "red"];
+
+/**
+ * 加载页面题目数据
+ */
 const loadData = async () => {
   const res = await QuestionControllerService.listQuestionSubmitByPageUsingPost(
     {
@@ -146,16 +203,19 @@ const columns = [
   {
     title: "题目提交编号",
     dataIndex: "id",
+    align: "center",
   },
   {
     title: "编程语言",
     dataIndex: "language",
+    align: "center",
   },
   {
     title: "判题信息",
     slotName: "judgeInfoMessage",
+    align: "center",
   },
-  {
+  /*{
     title: "消耗时间",
     slotName: "judgeInfoTime",
   },
@@ -163,21 +223,27 @@ const columns = [
     title: "消耗内存",
     slotName: "judgeInfoMemory",
   },
+  */
   {
     title: "判题状态",
     slotName: "status",
+    align: "center",
   },
+
   {
     title: "题目id",
     slotName: "questionId",
+    align: "center",
   },
   {
     title: "提交者 id",
     dataIndex: "userId",
+    align: "center",
   },
   {
     title: "题目创建时间",
     slotName: "createTime",
+    align: "center",
   },
 ];
 /**
@@ -192,7 +258,16 @@ const onPageChange = (page: number) => {
     current: page,
   };
 };
-
+/**
+ * 分页大小
+ * @param size
+ */
+const onPageSizeChange = (size: number) => {
+  searchParams.value = {
+    ...searchParams.value,
+    pageSize: size,
+  };
+};
 const router = useRouter();
 
 /**
