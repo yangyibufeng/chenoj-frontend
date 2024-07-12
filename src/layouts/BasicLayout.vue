@@ -23,7 +23,7 @@
 #basicLayout .header {
   //background: red;
   margin-bottom: 16px;
-  box-shadow: red 1px 1px 5px;
+  //box-shadow: red 1px 1px 5px;
 }
 
 #basicLayout .content {
