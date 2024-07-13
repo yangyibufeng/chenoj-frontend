@@ -1,7 +1,7 @@
 <template>
   <div id="questionsView">
     <!--  <div>所有题目</div>-->
-    <a-form :model="searchParams" layout="inline">
+    <a-form :model="searchParams" layout="inline" style="margin-left: 300px">
       <a-form-item field="title" label="题目">
         <a-input
           v-model="searchParams.title"
@@ -17,7 +17,9 @@
         />
       </a-form-item>
       <a-form-item>
-        <a-button type="primary" @click="doSubmit">查询</a-button>
+        <a-button type="outline" shape="round" status="normal" @click="doSubmit"
+          >查询</a-button
+        >
       </a-form-item>
     </a-form>
     <a-divider size="0" />
@@ -53,7 +55,11 @@
       </template>
       <template #optional="{ record }">
         <a-space>
-          <a-button type="primary" @click="toQuestionPage(record)"
+          <a-button
+            type="primary"
+            shape="round"
+            status="normal"
+            @click="toQuestionPage(record)"
             >详情
           </a-button>
           <!--        <a-button status="danger" @click="doDelete(record)">删除</a-button>-->

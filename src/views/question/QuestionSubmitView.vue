@@ -151,7 +151,7 @@ const searchParams = ref<QuestionSubmitQueryRequest>({
 });
 
 /**
- * 判题信息里面
+ * 判题信息色彩展示
  */
 const colors = ["orange", "green", "blue", "red"];
 

@@ -12,7 +12,10 @@
         <router-view />
       </a-layout-content>
 
-      <a-layout-footer class="footer">
+      <a-layout-footer
+        class="footer"
+        style="height: 40px; line-height: 40px; background-color: transparent"
+      >
         <a href="#" target="_blank"> 编程测试 BY 杨毅不逢</a>
       </a-layout-footer>
     </a-layout>
