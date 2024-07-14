@@ -1,5 +1,6 @@
 import { RouteRecordRaw } from "vue-router";
 import HomeView from "@/views/ExampleView.vue";
+import IntroduceView from "@/views/SystemIntroduceView.vue";
 import NoAuthView from "@/views/NoAuthView.vue";
 import ACCESS_ENUM from "@/access/accessEnum";
 import UserLoginView from "@/views/users/UserLoginView.vue";
@@ -35,7 +36,7 @@ export const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "宸OJ",
-    component: HomeView,
+    component: IntroduceView,
   },
   {
     path: "/questions",
