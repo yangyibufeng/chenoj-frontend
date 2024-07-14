@@ -163,8 +163,12 @@ onMounted(() => {
 
 <style>
 #questionDetailView {
-  max-width: 1400px;
+  //max-width: 1400px;
+  //margin: 0 auto;
+  max-width: 1600px;
   margin: 0 auto;
+  box-shadow: 0px 0px 10px rgba(35, 7, 7, 0.21);
+  border-radius: 10px;
 }
 
 #questionDetailView .arco-space-horizontal .arco-space-item {
