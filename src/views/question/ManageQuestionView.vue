@@ -15,8 +15,18 @@
       :stripe="true"
       @page-change="onPageChange"
     >
+      <!--设置点击题目id能跳转到题目界面-->
+      <template #id="{ record }">
+        <a
+          href="#"
+          class="link-like-text"
+          @click="() => toQuestionPage(record)"
+          >{{ record.id }}</a
+        >
+      </template>
+
       <template #createTime="{ record }">
-        {{ moment(record.createTime).format("YYYY-MM-DD") }}
+        {{ moment(record.createTime).format("YYYY-MM-DD HH:mm:ss") }}
       </template>
       <template #optional="{ record }">
         <a-space>
@@ -38,6 +48,7 @@ import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
 import moment from "moment";
 
+const tableRef = ref();
 const show = ref(true);
 
 const dataList = ref([]);
@@ -79,7 +90,7 @@ onMounted(() => {
 const columns = [
   {
     title: "题目编号",
-    dataIndex: "id",
+    slotName: "id",
     align: "center",
   },
   {
@@ -187,5 +198,15 @@ const toQuestionPage = (question: Question) => {
 
 <style scoped>
 #manageQuestionView {
+}
+.link-like-text {
+  color: black; /* 设置文本颜色为黑色 */
+  text-decoration: none; /* 去掉下划线 */
+}
+
+/* 如果您想在鼠标悬停时改变样式，可以添加如下代码 */
+.link-like-text:hover {
+  color: #ffbeae; /* 鼠标悬停时的颜色，这里仍然是黑色 */
+  text-decoration: greenyellow; /* 鼠标悬停时去掉下划线 */
 }
 </style>
