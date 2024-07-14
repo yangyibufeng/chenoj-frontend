@@ -10,7 +10,7 @@
     >
       <a-form-item
         field="userAccount"
-        tooltip="用户名既是您的昵称，又是您的账号名"
+        tooltip="我想弄整齐，只有密码那里有一个问号还占行，我难受"
         label="账号"
       >
         <a-input v-model="form.userAccount" placeholder="请输入账号..." />
@@ -25,31 +25,9 @@
       <!--        <a-checkbox v-model="form.isRead">我已经阅读过守则</a-checkbox>-->
       <!--      </a-form-item>-->
       <a-form-item style="justify-content: flex-end">
-        <a-button
-          size="large"
-          shape="round"
-          type="secondary"
-          status="success"
-          @click="toIndex"
-        >
-          首 页
-        </a-button>
-        <a-button
-          style="width: 120px; margin: 16px"
-          size="large"
-          shape="round"
-          type="primary"
-          html-type="submit"
+
+        <a-button type="primary" html-type="submit" style="width: 120px"
           >登录
-        </a-button>
-        <a-button
-          size="large"
-          shape="round"
-          type="outline"
-          status="success"
-          @click="toRegister"
-        >
-          注 册
         </a-button>
       </a-form-item>
     </a-form>
@@ -94,24 +72,5 @@ const handleSubmit = async () => {
   } else {
     message.error("登陆失败， " + res.message);
   }
-};
-
-/**
- * 回到首页
- * @param question
- */
-const toIndex = () => {
-  router.push({
-    path: `/`,
-  });
-};
-
-/**
- * 跳转到登录界面
- */
-const toRegister = () => {
-  router.push({
-    path: `/user/register`,
-  });
 };
 </script>

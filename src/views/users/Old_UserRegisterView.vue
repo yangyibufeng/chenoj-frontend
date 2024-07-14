@@ -1,6 +1,6 @@
 <template>
   <div class="userRegisterView">
-    <h2 style="margin-bottom: 30px">用户注册</h2>
+    <h1 style="margin: 32px 0">用户注册</h1>
     <a-form
       style="max-width: 480px; margin: 0 auto"
       label-align="left"
@@ -14,7 +14,7 @@
       <a-form-item
         field="userAccount"
         label="用户名"
-        tooltip="用户名既是您的昵称，又是您的账号名"
+        tooltip="我想弄整齐，只有密码那里有一个问号还占行，我难受"
         validate-trigger="blur"
       >
         <a-input v-model="form.userAccount" placeholder="请输入你的名字 ..." />
@@ -42,34 +42,22 @@
         />
       </a-form-item>
 
-      <a-space wrap>
-        <a-button
-          size="large"
-          shape="round"
-          type="secondary"
-          status="success"
-          @click="toIndex"
-        >
-          首 页
-        </a-button>
-        <a-button
-          style="margin: 25px; width: 100px"
-          size="large"
-          shape="round"
-          type="primary"
-          @click="$refs.formRef.resetFields()"
-          >重 置
-        </a-button>
-        <a-button
-          style="margin: 25px; width: 100px"
-          size="large"
-          shape="round"
-          type="primary"
-          html-type="submit"
-          @click="handleSubmit"
-          >注 册
-        </a-button>
-      </a-space>
+      <a-form-item style="justify-content: flex-end">
+        <a-space>
+          <a-button
+            type="primary"
+            style="width: 120px"
+            @click="$refs.formRef.resetFields()"
+            >重置
+          </a-button>
+          <a-button
+            type="primary"
+            html-type="submit"
+            style="width: 120px; margin-left: 15vh"
+            >注册
+          </a-button>
+        </a-space>
+      </a-form-item>
     </a-form>
   </div>
 </template>
@@ -168,14 +156,4 @@ const rules = {
 //   form,
 //   rules,
 // };
-
-/**
- * 回到首页
- * @param question
- */
-const toIndex = () => {
-  router.push({
-    path: `/`,
-  });
-};
 </script>
