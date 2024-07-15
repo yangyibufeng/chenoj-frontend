@@ -2,7 +2,7 @@
   <div id="basicLayout">
     <a-layout style="min-height: 100vh">
       <a-layout-header class="header">
-        <GolbalHeader />
+        <GlobalHeader />
       </a-layout-header>
 
       <a-layout-content class="content">
@@ -29,12 +29,13 @@
 
 <style scoped>
 #basicLayout {
+  margin: 0 20px;
 }
 
 #basicLayout .header {
-  //background: red;
-  margin-bottom: 16px;
-  //box-shadow: red 1px 1px 5px;
+  box-shadow: #eee 1px 1px 5px;
+  height: 60px;
+  margin: 5px;
 }
 
 #basicLayout .content {
@@ -56,5 +57,5 @@
 }
 </style>
 <script setup lang="ts">
-import GolbalHeader from "@/components/GolbalHeader.vue";
+import GlobalHeader from "@/components/GlobalHeader.vue";
 </script>
