@@ -12,6 +12,7 @@ import QuestionsView from "@/views/question/QuestionsView.vue";
 import QuestionSubmitView from "@/views/question/QuestionSubmitView.vue";
 import QuestionDetailView from "@/views/question/QuestionDetailView.vue";
 import UserInfoView from "@/views/users/UserInfoView.vue";
+import UserManageView from "@/views/users/UserManageView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -53,6 +54,10 @@ export const routes: Array<RouteRecordRaw> = [
     path: "/questions_submit",
     name: "浏览题目提交",
     component: QuestionSubmitView,
+    meta: {
+      access: ACCESS_ENUM.USER,
+      // hideInMenu: true,
+    },
   },
   {
     path: "/view/question/:id",
@@ -68,9 +73,9 @@ export const routes: Array<RouteRecordRaw> = [
     path: "/add/question",
     name: "创建题目",
     component: AddQuestionView,
-    // meta: {
-    //   access: ACCESS_ENUM.ADMIN,
-    // }, // 方便开发，先注释掉
+    meta: {
+      access: ACCESS_ENUM.ADMIN,
+    }, // 方便开发，先注释掉
   },
   {
     path: "/update/question",
@@ -88,6 +93,14 @@ export const routes: Array<RouteRecordRaw> = [
     meta: {
       access: ACCESS_ENUM.ADMIN,
     }, // 方便开发，先注释掉
+  },
+  {
+    path: "/manage/user",
+    name: "用户管理",
+    component: UserManageView,
+    meta: {
+      access: ACCESS_ENUM.ADMIN,
+    },
   },
   {
     path: "/hide",
