@@ -47,15 +47,19 @@
         label-align="right"
         title="个人信息"
         style="max-width: 480px; margin: 0 auto"
+        :rules="rules"
       >
         <a-form-item field="用户名称" label="账号 :">
           <a-input v-model="updateForm.userName" placeholder="请输入用户名称" />
         </a-form-item>
-        <a-form-item field="邮箱" label="邮箱 :">
-          <a-input v-model="updateForm.userName" placeholder="请输入邮箱" />
+        <a-form-item field="userEmail" label="邮箱 :" validate-trigger="blur">
+          <a-input v-model="updateForm.userEmail" placeholder="请输入邮箱" />
         </a-form-item>
-        <a-form-item field="电话" label="电话 :">
-          <a-input v-model="updateForm.userName" placeholder="请输入电话号码" />
+        <a-form-item field="userPhone" label="电话 :" validate-trigger="blur">
+          <a-input
+            v-model="updateForm.userPhone"
+            placeholder="请输入电话号码"
+          />
         </a-form-item>
         <a-form-item field="userProfile" label="简介 :">
           <a-textarea
@@ -87,6 +91,7 @@
     </div>
   </div>
 </template>
+
 <script setup lang="ts">
 import { useStore } from "vuex";
 import {
@@ -109,11 +114,11 @@ let loginUser = store.state.user.loginUser;
 
 const data = [
   {
-    label: "用户名称：",
+    label: "用户昵称：",
     value: loginUser.userName,
   },
   {
-    label: "账号名称：",
+    label: "用户账号：",
     value: loginUser.userAccount,
   },
   {
@@ -126,16 +131,16 @@ const data = [
   },
   {
     label: "邮箱：",
-    value: loginUser.email !== "" ? loginUser.email : "未填写",
+    value: loginUser.userEmail || "未填写",
   },
   {
     label: "电话：",
-    value: loginUser.phone !== "" ? loginUser.phone : "未填写",
+    value: loginUser.userPhone || "未填写",
   },
-  {
-    label: "当前状态：",
-    value: loginUser.userState !== "" ? loginUser.userState : "暂无简介",
-  },
+  // {
+  //   label: "当前状态：",
+  //   value: loginUser.userState !== "" ? loginUser.userState : "暂无简介",
+  // },
 
   {
     label: "创建时间：",
@@ -146,6 +151,58 @@ const data = [
     value: moment(loginUser.updateTime).format("YYYY-MM-DD HH:mm:ss"),
   },
 ];
+
+const rules = {
+  // 添加邮箱验证规则
+  userEmail: [
+    {
+      required: true,
+      message: "邮箱是必填项",
+      trigger: ["blur", "change"],
+    },
+    {
+      validator: (value: any, cb: (arg0: string | undefined) => void) => {
+        if (updateForm.value.userEmail === undefined) {
+          // 处理 form.checkPassword 为 undefined 的情况
+          cb("邮箱不能为空");
+          return;
+        }
+        const emailPattern =
+          /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+        // alert(form.password + "1");
+        if (!emailPattern.test(updateForm.value.userEmail)) {
+          cb("邮箱格式错误，请重新输入");
+        } else {
+          cb(undefined);
+        }
+      },
+    },
+  ],
+  // 添加电话验证规则（此处以中国大陆手机号为例）
+  userPhone: [
+    {
+      required: true,
+      message: "电话号码是必填项",
+      trigger: ["blur", "change"],
+    },
+    {
+      validator: (value: any, cb: (arg0: string | undefined) => void) => {
+        if (updateForm.value.userPhone === undefined) {
+          // 处理 form.checkPassword 为 undefined 的情况
+          cb("邮箱不能为空");
+          return;
+        }
+        const phonePattern = /^1[3-9]\d{9}$/;
+        // alert(form.password + "1");
+        if (!phonePattern.test(updateForm.value.userPhone)) {
+          cb("请输入有效的中国大陆手机号码");
+        } else {
+          cb(undefined);
+        }
+      },
+    },
+  ],
+};
 
 const visible = ref(false);
 const updateForm = ref<UserUpdateMyRequest>({
