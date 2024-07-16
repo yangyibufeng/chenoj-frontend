@@ -201,4 +201,9 @@ setTimeout(() => {
   height: 48px;
   background: black;
 }
+
+:deep(.arco-avatar) {
+  margin-bottom: 14px;
+  margin-right: 10px;
+}
 </style>
