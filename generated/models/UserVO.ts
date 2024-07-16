@@ -9,4 +9,6 @@ export type UserVO = {
   userName?: string;
   userProfile?: string;
   userRole?: string;
+  userPhone?: string;
+  userEmail?: string;
 };
