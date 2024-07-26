@@ -49,50 +49,33 @@
       @page-change="onPageChange"
       @pageSizeChange="onPageSizeChange"
     >
-      <!--
-      <template #judgeInfo="{ record }">
-        {{ JSON.stringify(record.judgeInfo) }}
-      </template>
-      -->
-
-      <!-- 
-      <template #judgeInfoMessage="{ record }">
-        {{
-          record.judgeInfo.message !== null ? record.judgeInfo.message : "NULL"
-        }}
-      </template>
-      <template #judgeInfoTime="{ record }">
-        {{
-          record.judgeInfo.time !== null ? record.judgeInfo.time + "ms" : "NULL"
-        }}
-      </template>
-      <template #judgeInfoMemory="{ record }">
-        {{
-          record.judgeInfo.memory !== null
-            ? record.judgeInfo.memory + "MB"
-            : "NULL"
-        }}
-      </template>
-      -->
-
       <template #judgeInfoMessage="{ record }">
         <a-space wrap>
           <a-tag
             size="medium"
-            v-for="(info, index) of record.judgeInfo"
-            :key="index"
-            :color="colors[index.length % colors.length]"
+            v-for="(info, key) of record.judgeInfo"
+            :key="key"
+            :color="colors[key.length % colors.length]"
           >
             {{
               `${
-                index === "message"
+                key === "message"
                   ? "结果"
-                  : index === "time"
+                  : key === "time"
                   ? "耗时"
-                  : "消耗内存"
+                  : key === "memory"
+                  ? "消耗内存"
+                  : key
               }`
             }}
-            {{ "：" + info }}
+            {{
+              "：" +
+              (key === "memory"
+                ? convertBytesToMB(info as number) + " MB"
+                : key === "time"
+                ? `${info} ms`
+                : info)
+            }}
           </a-tag>
         </a-space>
       </template>
@@ -174,6 +157,15 @@ const loadData = async () => {
     message.error("加载失败" + res.message);
   }
 };
+/**
+ * 用来将后端传来的消耗内存转换为MB为单位
+ * @param bytes
+ */
+const convertBytesToMB = (bytes: number): string => {
+  const mb = bytes / (1024 * 1024);
+  return mb.toFixed(2);
+};
+
 /**
  * 确认搜索，重新加载数据
  */
@@ -302,7 +294,7 @@ const getStatusText = (statusCode: any) => {
 
 <style scoped>
 #questionSubmitView {
-  max-width: 1280px;
+  max-width: 1320px;
   margin: 0 auto;
 }
 
